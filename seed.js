@@ -57,7 +57,7 @@ const { status } = require('express/lib/response');
 
 
   const hash1 = await bcrypt.hash('Password123', 10);
-  const hash2 = await bcrypt.hash('Password456');
+  const hash2 = await bcrypt.hash('Password456',10);
 
   const u1 = await db.collection('user').insertOne({
     email: 'zain@zain.com',
@@ -120,10 +120,108 @@ const { status } = require('express/lib/response');
       { title: 'Run training loop', done: false },
       { title: 'Evaluate accuracy', done: false }
     ],
-    dueDate: new Date('2025-05-10'), 
+    dueDate: new Date('2025-05-10'),
     createdAt: new Date()
-  })
+  });
 
-  console.log('TODO: implement seed.js');
+  await db.collection('tasks').insertOne({
+    ownerId: zainId,
+    projectId: p1Id,
+    title: 'Write project report',
+    status: 'todo',
+    priority: 4,
+    tags: ['writing', 'urgent'],
+    subtasks: [
+      { title: 'Draft introduction', done: false },
+      { title: 'Add methodology section', done: false }
+    ],
+    createdAt: new Date()            
+  });
+
+  await db.collection('tasks').insertOne({
+    ownerId: zainId,
+    projectId: p2Id,
+    title: 'Complete NoSQL lab',
+    status: 'in-progress',
+    priority: 5,
+    tags: ['db', 'lab'],
+    subtasks: [
+      { title: 'Design schema', done: true },
+      { title: 'Write seed.js', done: false },
+      { title: 'Implement 15 queries', done: false }
+    ],
+    dueDate: new Date('2025-04-28'),
+    createdAt: new Date()
+  });
+
+  await db.collection('tasks').insertOne({
+    ownerId: aliId,
+    projectId: p3Id,
+    title: 'Design homepage layout',
+    status: 'done',
+    priority: 3,
+    tags: ['design', 'frontend'],
+    subtasks: [
+      { title: 'Wireframe', done: true },
+      { title: 'Pick color scheme', done: true }
+    ],
+    createdAt: new Date()
+  });
+
+  await db.collection('tasks').insertOne({
+    ownerId: aliId,
+    projectId: p4Id,
+    title: 'Document old API endpoints',
+    status: 'todo',
+    priority: 2,
+    tags: ['docs'],
+    subtasks: [],
+    createdAt: new Date()
+  });
+
+    await db.collection('notes').insertOne({
+    ownerId: zainId,
+    projectId: p1Id,           
+    title: 'Model architecture ideas',
+    body: 'Consider using a transformer.',
+    tags: ['ml', 'ideas'],
+    createdAt: new Date()
+  });
+
+  await db.collection('notes').insertOne({
+    ownerId: zainId,
+    projectId: p2Id,
+    title: 'MongoDB cheat sheet',
+    body: 'Remember: $addToSet for no duplicates, $pull to remove, $ positional for embedded arrays.',
+    tags: ['db', 'reference'],
+    createdAt: new Date()
+  });
+
+  await db.collection('notes').insertOne({
+    ownerId: zainId,
+    title: 'General study tips',
+    body: 'Start assignments early. Use analogies to understand concepts.',
+    tags: ['personal'],
+    createdAt: new Date()
+  });
+
+  await db.collection('notes').insertOne({
+    ownerId: aliId,
+    projectId: p3Id,
+    title: 'Font choices',
+    body: 'Manrope for headings, Inter for body text.',
+    tags: ['design', 'frontend'],
+    createdAt: new Date()
+  });
+
+  await db.collection('notes').insertOne({
+    ownerId: aliId,
+    title: 'Book recommendations',
+    body: 'Read Clean Code before next semester.',
+    tags: ['personal', 'reading'],
+    createdAt: new Date()
+  });
+
+  console.log('Implement seed.js');
   process.exit(0);
 })();
