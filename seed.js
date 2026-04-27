@@ -16,6 +16,7 @@
 require('dotenv').config();
 const bcrypt = require('bcryptjs');
 const { connect } = require('./db/connection');
+const { status } = require('express/lib/response');
 
 (async () => {
   const db = await connect();
@@ -55,27 +56,73 @@ const { connect } = require('./db/connection');
   // =============================================================================
 
 
-  const hash1=await bcrypt.hash('Password123',10);
-  const hash2=await bcrypt.hash('Password456');
+  const hash1 = await bcrypt.hash('Password123', 10);
+  const hash2 = await bcrypt.hash('Password456');
 
-  const u1=await db.collection('user').insertOne({
-    email:'zain@zain.com',
-    passwordHash:hash1,
-    name:'Zain',
-    createdAt:new Date()
-  });
-
-  const u2=await db.collection('user').insertOne({
-    email:'ali@zain.com',
-    passwordHash:hash2,
-    name:'Ali',
+  const u1 = await db.collection('user').insertOne({
+    email: 'zain@zain.com',
+    passwordHash: hash1,
+    name: 'Zain',
     createdAt: new Date()
   });
 
-  const zainId=u1.insertId;
-  const aliId=u2.insertId;
+  const u2 = await db.collection('user').insertOne({
+    email: 'ali@zain.com',
+    passwordHash: hash2,
+    name: 'Ali',
+    createdAt: new Date()
+  });
 
-  await db.collection()
+  const zainId = u1.insertId;
+  const aliId = u2.insertId;
+
+  const p1 = await db.collection('projects').insertOne({
+    ownerId: zainId,
+    name: 'FYP',
+    archived: false,
+    createdAt: new Date()
+  });
+
+  const p2 = await db.collection('projects').insertOne({
+    ownerId: zainId,
+    name: 'WEBSITE',
+    archived: false,
+    createdAt: new Date()
+  });
+
+  const p3 = await db.collection('projects').insertOne({
+    ownerId: aliId,
+    name: 'InterShip',
+    archived: false,
+    createdAt: new Date()
+  });
+
+  const p4 = await db.collection('projects').insertOne({
+    ownerId: aliId,
+    name: 'ML',
+    archived: false,
+    createdAt: new Date()
+  });
+
+  const p1Id = p1.insertId;
+  const p2Id = p2.insertId;
+  const p3Id = p3.insertId;
+  const p4Id = p4.insertId;
+
+  await db.collection('tasks').insertOne({
+    ownerId: zainId,
+    projectId: p1Id,
+    title: 'Train in ML',
+    status: 'in progress',
+    tags: ['ml', 'urgent'],
+    subtasks: [
+      { title: 'Prepare dataset', done: true },
+      { title: 'Run training loop', done: false },
+      { title: 'Evaluate accuracy', done: false }
+    ],
+    dueDate: new Date('2025-05-10'), 
+    createdAt: new Date()
+  })
 
   console.log('TODO: implement seed.js');
   process.exit(0);
