@@ -21,10 +21,10 @@ const { connect } = require('./db/connection');
   const db = await connect();
 
   // OPTIONAL: clear existing data so re-seeding is idempotent
-  // await db.collection('users').deleteMany({});
-  // await db.collection('projects').deleteMany({});
-  // await db.collection('tasks').deleteMany({});
-  // await db.collection('notes').deleteMany({});
+  await db.collection('users').deleteMany({});
+  await db.collection('projects').deleteMany({});
+  await db.collection('tasks').deleteMany({});
+  await db.collection('notes').deleteMany({});
 
   // =============================================================================
   //  TODO: Insert your seed data below.
@@ -53,6 +53,29 @@ const { connect } = require('./db/connection');
   //      createdAt: new Date()
   //    }
   // =============================================================================
+
+
+  const hash1=await bcrypt.hash('Password123',10);
+  const hash2=await bcrypt.hash('Password456');
+
+  const u1=await db.collection('user').insertOne({
+    email:'zain@zain.com',
+    passwordHash:hash1,
+    name:'Zain',
+    createdAt:new Date()
+  });
+
+  const u2=await db.collection('user').insertOne({
+    email:'ali@zain.com',
+    passwordHash:hash2,
+    name:'Ali',
+    createdAt: new Date()
+  });
+
+  const zainId=u1.insertId;
+  const aliId=u2.insertId;
+
+  await db.collection()
 
   console.log('TODO: implement seed.js');
   process.exit(0);
