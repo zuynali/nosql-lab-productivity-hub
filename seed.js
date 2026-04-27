@@ -59,22 +59,22 @@ const { status } = require('express/lib/response');
   const hash1 = await bcrypt.hash('Password123', 10);
   const hash2 = await bcrypt.hash('Password456',10);
 
-  const u1 = await db.collection('user').insertOne({
+  const u1 = await db.collection('users').insertOne({
     email: 'zain@zain.com',
     passwordHash: hash1,
     name: 'Zain',
     createdAt: new Date()
   });
 
-  const u2 = await db.collection('user').insertOne({
+  const u2 = await db.collection('users').insertOne({
     email: 'ali@zain.com',
     passwordHash: hash2,
     name: 'Ali',
     createdAt: new Date()
   });
 
-  const zainId = u1.insertId;
-  const aliId = u2.insertId;
+  const zainId = u1.insertedId;
+  const aliId = u2.insertedId;
 
   const p1 = await db.collection('projects').insertOne({
     ownerId: zainId,
@@ -104,10 +104,10 @@ const { status } = require('express/lib/response');
     createdAt: new Date()
   });
 
-  const p1Id = p1.insertId;
-  const p2Id = p2.insertId;
-  const p3Id = p3.insertId;
-  const p4Id = p4.insertId;
+  const p1Id = p1.insertedId;
+  const p2Id = p2.insertedId;
+  const p3Id = p3.insertedId;
+  const p4Id = p4.insertedId;
 
   await db.collection('tasks').insertOne({
     ownerId: zainId,
@@ -222,6 +222,6 @@ const { status } = require('express/lib/response');
     createdAt: new Date()
   });
 
-  console.log('Implement seed.js');
+  console.log('seeding seed.js');
   process.exit(0);
 })();
