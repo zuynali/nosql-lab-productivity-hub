@@ -17,6 +17,7 @@ router.post('/signup', async (req, res, next) => {
     }
     const passwordHash = await bcrypt.hash(password, 10);
     // QUERY 1
+    
     const result = await signupUser(getDb(), { email, passwordHash, name });
     req.session.user = { _id: result.insertedId, email, name };
     res.redirect('/dashboard');

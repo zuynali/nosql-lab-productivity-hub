@@ -45,7 +45,7 @@ const { ObjectId } = require('mongodb');
  */
 async function signupUser(db, userData) {
   // TODO: implement
-  throw new Error('signupUser not implemented');
+  
 }
 
 /**
