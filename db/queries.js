@@ -45,13 +45,21 @@ const { ObjectId } = require('mongodb');
  */
 async function signupUser(db, userData) {
   // TODO: implement
-  const result=await db.connection('users').insertOne({
-    email:userData.email,
-    passwordHash:userData.passwordHash,
-    name: userData.name,
-    createdAt:new Date()
+  const exists = await db.collection('users').findOne({
+    email: userData.email
   });
-  return result;
+  if (exists) {
+    throw new Error("Email Already Exists");
+  }
+  else {
+    const result = await db.collection('users').insertOne({
+      email: userData.email,
+      passwordHash: userData.passwordHash,
+      name: userData.name,
+      createdAt: new Date()
+    });
+    return result;
+  }
 }
 
 /**
@@ -71,7 +79,7 @@ async function signupUser(db, userData) {
  */
 async function loginFindUser(db, email) {
   // TODO: implement
-  throw new Error('loginFindUser not implemented');
+  return await db.collection('user').findOne({ email: email });
 }
 
 /**
@@ -91,7 +99,7 @@ async function loginFindUser(db, email) {
  */
 async function listUserProjects(db, ownerId) {
   // TODO: implement
-  throw new Error('listUserProjects not implemented');
+  
 }
 
 /**
