@@ -99,7 +99,11 @@ async function loginFindUser(db, email) {
  */
 async function listUserProjects(db, ownerId) {
   // TODO: implement
-  
+  return await db.collection('projects')
+    .find({ ownerId: ownerId, archived: false })
+    .sort({ createdAt: -1 })
+    .toArray();
+
 }
 
 /**
@@ -117,7 +121,15 @@ async function listUserProjects(db, ownerId) {
  */
 async function createProject(db, projectData) {
   // TODO: implement
-  throw new Error('createProject not implemented');
+
+  const result = await db.collection('projects').insertOne({
+    ownerId: projectData.ownerId,
+    name: projectData.name,
+    description: projectData.description || '',
+    archived: false,
+    createdAt: new Date()
+  });
+  return result;
 }
 
 /**
@@ -137,7 +149,12 @@ async function createProject(db, projectData) {
  */
 async function archiveProject(db, projectId) {
   // TODO: implement
-  throw new Error('archiveProject not implemented');
+  const result = await db.collection('projects').updateOne(
+    { _id: projectId },
+    { $set: { archived: true } }
+  );
+  return result;
+
 }
 
 /**

@@ -13,7 +13,7 @@ Briefly describe each collection (1–2 sentences each):
 - **tasks** —
 - **notes** —
 
-## These are tables which are used in nosql, users are stored accounts, project stores projects, task stores task belonging to projects and notes are notes
+## These are tables which are used in nosql, users stores user, projects stores project, tasks stores tasks belonging to projects and notes are notes
 
 ## 2. Document Shapes
 
@@ -37,11 +37,12 @@ For each collection, write the document shape (field name + type + required/opti
 TODO
 
 {
-_id=ObjectId,
-ownerId:ObjectId(required),
-name:string (required),
-description: string(optional),
-createdAt: Date(required)
+_id: ObjectId,
+ownerId: ObjectId (required),
+name: string (required),
+description: string (optional),
+archived: boolean (required),
+createdAt: Date (required)
 }
 ```
 
@@ -54,6 +55,7 @@ _id:ObjectId,
 ownerId:Object(required),
 projectId:ObjectId(required),
 title:string(required),
+status: string (required),
 tags:array of string,
 subtasks: array of objects,
 createdAt:Date(required),
